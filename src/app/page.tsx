@@ -1,20 +1,27 @@
 "use client";
 
 import React from "react";
+import NavBar from "@/components/nav";
+import HeroSection from "@/components/landing/HeroSection";
+import FeatureSection from "@/components/landing/FeatureSection";
+import TeamSection from "@/components/landing/TeamSection";
+import TestimonialSection from "@/components/landing/TestimonialSection";
+import CallToAction from "@/components/landing/CallToAction";
 import Footer from "@/components/footer";
+import { useAuth } from "@/app/context/authContext";
 
 function Home() {
+  const { user } = useAuth();
+
   return (
     <>
-      <div className="flex flex-col min-h-screen">
-        <main className="flex-grow">
-          {/* Main content goes here */}
-          <h1 className="text-3xl font-bold text-center mt-10">
-            Welcome to CourseFlow
-          </h1>
-        </main>
-        <Footer />
-      </div>
+      <NavBar />
+      <HeroSection />
+      <FeatureSection />
+      <TeamSection />
+      <TestimonialSection />
+      {!user && <CallToAction />}
+      <Footer />
     </>
   );
 }
