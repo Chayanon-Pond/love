@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import { signOut } from "@/lib/auth";
 import {
   DropdownMenu,
@@ -46,15 +45,15 @@ const NavBar: React.FC<NavBarProps> = ({ navigate }) => {
       (async () => {
         await signOut();
         document.cookie = "redirecting=; max-age=0; path=/;";
-        window.location.href = "/login";
+        window.location.href = "/secret";
       })();
     }
   }, [user]);
 
   const menuItems = [
     { icon: User, label: "Profile", href: "/profile" },
-    { icon: BookText, label: "My Courses", href: "/my-courses" },
-    { icon: ClipboardCheck, label: "My Assignments", href: "/my-assignments" },
+    { icon: BookText, label: "My Pic", href: "/my-pic" },
+    { icon: ClipboardCheck, label: "My Story", href: "/my-story" },
     { icon: Star, label: "My Wishlist", href: "/wishlist" },
     { icon: Package, label: "My Bundle", href: "/my-bundles" },
   ];
@@ -94,9 +93,12 @@ const NavBar: React.FC<NavBarProps> = ({ navigate }) => {
           </a>
 
           {!user ? (
-            <Link href="/login">
-              <ButtonT variant="primary">Secret</ButtonT>
-            </Link>
+            <button 
+              onClick={() => handleNav("/secret")}
+              className="font-sans whitespace-nowrap bg-[#c788ad] hover:bg-[#993f74] rounded-[12px] font-bold px-[32px] py-[18px] cursor-pointer flex items-center justify-center text-white text-lg transition"
+            >
+              Secret
+            </button>
           ) : (
             <DropdownMenu onOpenChange={setIsOpen}>
               <DropdownMenuTrigger asChild>
@@ -157,27 +159,28 @@ const NavBar: React.FC<NavBarProps> = ({ navigate }) => {
       <div className="sm:hidden flex justify-between items-center h-full mx-[16px]">
         {/* Logo */}
         <a
-          className="text-xl font-extrabold text-transparent bg-linear1 cursor-pointer"
+          className="text-xl font-extrabold text-transparent bg-[#c788ad] cursor-pointer"
           style={{ backgroundClip: "text", WebkitBackgroundClip: "text" }}
           onClick={() => handleNav("/")}
         >
-          CourseFlow
+          pezpoy
         </a>
 
         <div className="flex items-center space-x-4">
           <a
-            className="text-sm font-bold text-[#1A1A66] hover:text-[#0033CC] transition !important cursor-pointer"
+            className="text-sm font-bold text-[#c788ad] hover:text-[#993f74] transition !important cursor-pointer"
             onClick={() => handleNav("/our-courses")}
           >
-            Our Courses
+            ความน่ารักของหนู
           </a>
 
           {!user ? (
-            <Link href="/login">
-              <button className="font-sans whitespace-nowrap w-[74px] h-[37px] bg-[var(--blue-500)] hover:bg-blue-700 rounded-[12px] font-bold px-[32px] py-[18px] cursor-pointer flex items-center justify-center text-white text-sm">
-                Log in
-              </button>
-            </Link>
+            <button 
+              onClick={() => handleNav("/secret")}
+              className="font-sans whitespace-nowrap w-[74px] h-[37px] bg-[#c788ad] hover:bg-[#993f74] rounded-[12px] font-bold px-[32px] py-[18px] cursor-pointer flex items-center justify-center text-white text-sm transition"
+            >
+              Secret
+            </button>
           ) : (
             <DropdownMenu onOpenChange={setIsOpen}>
               <DropdownMenuTrigger asChild>
