@@ -26,21 +26,48 @@ const ProposalPage: React.FC = () => {
   useEffect(() => {
     checkExistingProposal();
     // เล่นเพลงอัตโนมัติเมื่อเข้าหน้า
-    playMusic();
+    const timer = setTimeout(() => {
+      playMusic();
+    }, 500); // รอ 500ms เพื่อให้โหลดสมบูรณ์
+    
+    return () => clearTimeout(timer);
   }, []);
 
+  // ฟังก์ชันสำหรับเล่นเพลงเมื่อมีการ interaction
+  useEffect(() => {
+    const handleUserInteraction = () => {
+      if (!isPlaying && audioRef.current) {
+        playMusic();
+      }
+    };
+
+    // เพิ่ม event listeners สำหรับ user interaction
+    document.addEventListener('click', handleUserInteraction);
+    document.addEventListener('touchstart', handleUserInteraction);
+    document.addEventListener('keydown', handleUserInteraction);
+
+    return () => {
+      document.removeEventListener('click', handleUserInteraction);
+      document.removeEventListener('touchstart', handleUserInteraction);
+      document.removeEventListener('keydown', handleUserInteraction);
+    };
+  }, [isPlaying]);
+
   // เล่นเพลง
-  const playMusic = () => {
+  const playMusic = async () => {
     if (audioRef.current) {
-      audioRef.current
-        .play()
-        .then(() => {
-          setIsPlaying(true);
-        })
-        .catch((error) => {
-          console.log("Auto-play prevented:", error);
-          // บางเบราว์เซอร์จะบล็อค auto-play
-        });
+      try {
+        // ตั้งค่า volume ก่อนเล่น
+        audioRef.current.volume = 0.7;
+        audioRef.current.muted = false;
+        
+        await audioRef.current.play();
+        setIsPlaying(true);
+      } catch (error) {
+        console.log("Auto-play prevented:", error);
+        // บางเบราว์เซอร์จะบล็อค auto-play
+        // จะเล่นได้เมื่อมี user interaction
+      }
     }
   };
 
@@ -60,10 +87,14 @@ const ProposalPage: React.FC = () => {
   // เปลี่ยนเพลง
   const changeSong = (songPath: string) => {
     if (audioRef.current) {
+      const wasPlaying = isPlaying;
       audioRef.current.src = songPath;
       setCurrentSong(songPath);
-      audioRef.current.play();
-      setIsPlaying(true);
+      
+      if (wasPlaying) {
+        audioRef.current.play().catch(console.error);
+        setIsPlaying(true);
+      }
     }
   };
 
@@ -165,9 +196,17 @@ const ProposalPage: React.FC = () => {
         ref={audioRef}
         loop
         preload="auto"
+        autoPlay
+        muted={false}
         onEnded={() => setIsPlaying(false)}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
+        onLoadedData={() => {
+          // เมื่อโหลดเสร็จแล้วให้พยายามเล่น
+          if (audioRef.current) {
+            playMusic();
+          }
+        }}
       >
         <source src={currentSong} type="audio/mpeg" />
         เบราว์เซอร์ของคุณไม่รองรับการเล่นเสียง

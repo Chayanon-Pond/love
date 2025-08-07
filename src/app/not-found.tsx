@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useRouter } from 'next/navigation';
+import React from "react";
+import { useRouter } from "next/navigation";
 
 export default function NotFound() {
   const router = useRouter();
@@ -17,7 +17,7 @@ export default function NotFound() {
           หน้าที่คุณพยายามเข้าถึงอาจถูกย้าย เปลี่ยนชื่อ หรือไม่มีอยู่จริง
         </p>
         <button
-          onClick={() => router.push('/')}
+          onClick={() => router.push("/")}
           className="bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition hover:scale-105"
         >
           กลับหน้าหลัก 🏠
