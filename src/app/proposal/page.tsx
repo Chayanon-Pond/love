@@ -19,11 +19,19 @@ const ProposalPage: React.FC = () => {
   const [proposalData, setProposalData] = useState<ProposalData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentSong, setCurrentSong] = useState("/music/oneday.mp3"); // ใช้ไฟล์จริงของคุณ
+  const [currentSong, setCurrentSong] = useState("/music/oneday.mp3");
+  const [isMounted, setIsMounted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  // แก้ไข hydration mismatch
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // ตรวจสอบว่ามีการขอเป็นแฟนแล้วหรือยัง
   useEffect(() => {
+    if (!isMounted) return;
+    
     checkExistingProposal();
     // เล่นเพลงอัตโนมัติเมื่อเข้าหน้า
     const timer = setTimeout(() => {
@@ -31,10 +39,12 @@ const ProposalPage: React.FC = () => {
     }, 500); // รอ 500ms เพื่อให้โหลดสมบูรณ์
     
     return () => clearTimeout(timer);
-  }, []);
+  }, [isMounted]);
 
   // ฟังก์ชันสำหรับเล่นเพลงเมื่อมีการ interaction
   useEffect(() => {
+    if (!isMounted) return;
+    
     const handleUserInteraction = () => {
       if (!isPlaying && audioRef.current) {
         playMusic();
@@ -51,7 +61,7 @@ const ProposalPage: React.FC = () => {
       document.removeEventListener('touchstart', handleUserInteraction);
       document.removeEventListener('keydown', handleUserInteraction);
     };
-  }, [isPlaying]);
+  }, [isPlaying, isMounted]);
 
   // เล่นเพลง
   const playMusic = async () => {
@@ -188,6 +198,15 @@ const ProposalPage: React.FC = () => {
       setIsLoading(false);
     }
   };
+
+  // แสดง loading state จนกว่า component จะ mount
+  if (!isMounted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-rose-100 via-pink-100 to-red-100 flex items-center justify-center">
+        <div className="text-pink-600 text-xl">💕 Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-100 via-pink-100 to-red-100">
