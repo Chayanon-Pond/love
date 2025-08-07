@@ -93,7 +93,7 @@ const NavBar: React.FC<NavBarProps> = ({ navigate }) => {
           </a>
 
           {!user ? (
-            <button 
+            <button
               onClick={() => handleNav("/secret")}
               className="font-sans whitespace-nowrap bg-[#c788ad] hover:bg-[#993f74] rounded-[12px] font-bold px-[32px] py-[18px] cursor-pointer flex items-center justify-center text-white text-lg transition"
             >
@@ -175,7 +175,7 @@ const NavBar: React.FC<NavBarProps> = ({ navigate }) => {
           </a>
 
           {!user ? (
-            <button 
+            <button
               onClick={() => handleNav("/secret")}
               className="font-sans whitespace-nowrap w-[74px] h-[37px] bg-[#c788ad] hover:bg-[#993f74] rounded-[12px] font-bold px-[32px] py-[18px] cursor-pointer flex items-center justify-center text-white text-sm transition"
             >
