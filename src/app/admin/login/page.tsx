@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 
 const AdminLogin: React.FC = () => {
+  const router = useRouter();
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
@@ -157,8 +159,8 @@ const AdminLogin: React.FC = () => {
       console.log("🔄 Redirecting to /admin/panel...");
       setTimeout(() => {
         console.log("🚀 Executing redirect...");
-        window.location.href = "/admin/panel";
-      }, 1000); // เพิ่มเวลารอเป็น 1 วินาที
+        router.push("/admin/panel");
+      }, 1000);
     } catch (error) {
       console.error("💥 Login error:", error);
       alert("เกิดข้อผิดพลาดในการเข้าสู่ระบบ: " + error);
@@ -266,10 +268,10 @@ const AdminLogin: React.FC = () => {
                 <strong>🧪 Demo Account:</strong>
                 <br />
                 Username:{" "}
-                <code className="bg-black/30 px-2 py-1 rounded">ไม่บอก</code>
+                <code className="bg-black/30 px-2 py-1 rounded">admin</code>
                 <br />
                 Password:{" "}
-                <code className="bg-black/30 px-2 py-1 rounded">ไม่บอก</code>
+                <code className="bg-black/30 px-2 py-1 rounded">admin123</code>
               </p>
             </div>
           </div>
@@ -277,7 +279,7 @@ const AdminLogin: React.FC = () => {
           {/* Back Button */}
           <div className="mt-8 text-center">
             <button
-              onClick={() => (window.location.href = "/")}
+              onClick={() => router.push('/')}
               className="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-semibold py-2 px-6 rounded-full shadow-lg transform transition hover:scale-105"
             >
               🏠 กลับหน้าหลัก

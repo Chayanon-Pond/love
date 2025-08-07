@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 
@@ -13,6 +14,7 @@ interface ProposalData {
 }
 
 const AdminPanel: React.FC = () => {
+  const router = useRouter();
   const { isAuthenticated, user, isLoading: authLoading, logout } = useAdminAuth();
   const [proposals, setProposals] = useState<ProposalData[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -22,9 +24,9 @@ const AdminPanel: React.FC = () => {
   // ถ้ายังไม่ login ให้ redirect ไป login page
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
-      window.location.href = '/admin/login';
+      router.push('/admin/login');
     }
-  }, [isAuthenticated, authLoading]);
+  }, [isAuthenticated, authLoading, router]);
 
   // โหลดข้อมูลทั้งหมด
   useEffect(() => {
@@ -234,7 +236,7 @@ const AdminPanel: React.FC = () => {
               </button>
 
               <button
-                onClick={() => window.location.href = '/proposal'}
+                onClick={() => router.push('/proposal')}
                 className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-full shadow-lg transform transition hover:scale-105"
               >
                 💕 ไปหน้าขอเป็นแฟน
@@ -388,7 +390,7 @@ const AdminPanel: React.FC = () => {
           {/* Back Button */}
           <div className="mt-8 text-center">
             <button
-              onClick={() => window.location.href = '/'}
+              onClick={() => router.push('/')}
               className="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg transform transition hover:scale-105"
             >
               🏠 กลับหน้าหลัก

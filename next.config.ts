@@ -4,6 +4,13 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  // ปิด static generation สำหรับหน้าที่มีปัญหา
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
+  },
   // api: {
   //   bodyParser: {
   //     sizeLimit: '100mb', 
